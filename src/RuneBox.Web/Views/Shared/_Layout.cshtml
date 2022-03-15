@@ -1,0 +1,85 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - RuneBox</title>
+    <link rel="stylesheet" href="~/lib/metro/css/metro-all.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <header data-role="appbar" data-expand-point="md" style="position: static;">
+    <a href="~/" class="brand no-hover order-1"><img style="width: 70px; height: 70px;" src="~/images/logo.png" /> RuneBox</a>
+    <ul class="app-bar-menu order-2 order-md-3">
+        @*@if (Model != null && Model.CurrentUser != null) {<span class="mif-spinner mif-3x mr-3"></span>
+            <li>
+                    <a href="~/manage/wallet"><span class="icon mif-command"></span> Wallet</a>
+                </li>
+            <li>
+                    <a class="dropdown-toggle"><span class="icon mif-pencil"></span> Write</a>
+                    <ul class="d-menu" data-role="dropdown">
+                        <li><a href="~/@Model.UserName/write/markdown"><span class="icon mif-news"></span> Markdown</a></li>
+                        <li><a href="~/@Model.UserName/write/blocks"><span class="icon mif-news"></span> Blocks style</a></li>
+                    </ul>
+                </li>
+        }*@
+    </ul>
+
+    <div class="app-bar-container ml-auto order-3 order-md-4">
+        @*@if (Model != null && Model.CurrentUser != null) {
+            <div class="app-bar-container">
+                <a class="app-bar-item" href="~/manage/wallet"><span class="icon mif-suitcase"></span> Manage Wallet</a>
+            </div>
+            <div class="app-bar-container float-left">
+                <span class="app-bar-item text-center dropdown-toggle">
+                    @if (string.IsNullOrWhiteSpace( Model.AvatarUri )) {
+                        <span class="icon mif-user fg-orange"></span>
+                    }
+                    else {
+                        <img class="icon" style="width: 32px; height: 32px;" src="@Model.AvatarUri" />
+                    }
+                    @Model.CurrentUser.NickName
+                </span>
+                <ul class="d-menu place-right" data-role="dropdown" style="max-width: 130px;">
+                    <li class="divider"></li>
+                    <li>
+                        <a href="~/@Model.CurrentUser.UserName"><span class="icon mif-profile fg-blue"></span> My Profile</a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a href="~/account/logout"><span class="icon mif-exit fg-red"></span> Logout</a>
+                    </li>
+                </ul>
+            </div>
+        }
+        else {
+            <a class="app-bar-item text-center bg-green fg-white" href="https://github.com/rune-box/web"><span class="mif-github"></span></a>
+        }*@
+    </div>
+    </header>
+
+    <div class="container" style="min-height: 600px;">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    @*@await Html.PartialAsync("_Charm_IdenaSelector")*@
+
+    <footer class="text-muted">
+        <div class="container grid">
+            <div class="row mt-3 mb-3">
+                <hr class="w-100" />
+            </div>
+            <div class="row mt-3 mb-3">
+                &copy; 2022 - Rune Box <a class="fg-gray ml-3" href="https://github.com/rune-box/web"><span class="mif-github"></span></a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/metro/js/metro.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
