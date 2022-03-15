@@ -114,7 +114,7 @@ function init(canvas_element, frame_rate_in_milliseconds) {
 
     // 半径
     rLarge = originPos.x >= originPos.y ? originPos.y : originPos.x;
-    rLarge -= 20;
+    rLarge -= 30;
     if (rLarge < 300)
         rLarge = 300;
     rSmall = rLarge - 100;
