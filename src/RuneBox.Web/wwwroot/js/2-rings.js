@@ -10,6 +10,9 @@ let pos25 = originPos,
     pos22 = originPos;
 const delta25 = 360.0 / 25,
     delta22 = 360.0 / 22;
+
+const deltaAngle = 0.01 * Math.PI;
+const circleAngle = 2 * Math.PI;
 let spritesImage25, spritesImage22;
 let runes25Ready = false, runes22Ready = false;
 
@@ -56,6 +59,7 @@ function generateRandomIds(count) {
         count = 10;
     }
     const normalIds = new Array(count).fill(0).map((_, i) => i);
+    // random
     const ids = [];
     while (true) {
         const index = randomInt(normalIds.length);
@@ -71,9 +75,9 @@ function generateRandomIds(count) {
 function generateIdsData(count) {
     const data = [];
     const ids = generateRandomIds(count);
-    ids.map(function (id, index) {
+    ids.map(function (v, index) {
         data.push({
-            id: id,
+            id: v,
             index: index
         });
     });
@@ -133,7 +137,22 @@ function init(canvas_element, frame_rate_in_milliseconds) {
         runes22Ready = true;
     }
     spritesImage22.src = "/images/runes/sprites-256-4.png";
+}
 
+function moveItems(array, propertyName, forward) {
+    const count = array.length;
+    array.forEach(item => {
+        if (forward) {
+            item[propertyName]++;
+            if (item[propertyName] >= count)
+                item[propertyName] = item[propertyName] - count;
+        }
+        else {
+            item[propertyName]--;
+            if (item[propertyName] < 0)
+                item[propertyName] = item[propertyName] + count;
+        }
+    });
 }
 
 let runes25StartIndex = 0;
@@ -143,31 +162,21 @@ function computeOpacity(start, current, count) {
     return (1 + alpha) / 2;
 }
 
-function drawItems(runes, spritesImage, r, pos, runeSize, drawSize, count, drawCount, forward, updateOpacity) {
+function drawItems(runes, spritesImage, r, pos, runeSize, drawSize, count, drawCount, updateOpacity) {
     if (drawCount <= 0)
         drawCount = count;
-    deltaAngle = 360.0 / drawCount;
     let hasDrawn = 0;
-    runes.map(function (rune, i) {
+
+    const deltaAngle2 = circleAngle / count;
+    runes.forEach((rune, i) => {
         if (hasDrawn < drawCount) {
-            const angle = deltaAngle * rune.index;
+            const angle = deltaAngle2 * rune.index;
             const dx = r * Math.sin(angle);
             const dy = r * Math.cos(angle);
             if (updateOpacity) {
                 ctx.globalAlpha = computeOpacity(0, i, 25);
             }
             ctx.drawImage(spritesImage, rune.id * runeSize, 0, runeSize, runeSize, pos.x + dx, pos.y + dy, drawSize, drawSize);
-        }
-        // forward/backward
-        if (forward) {
-            rune.index++;
-            if (rune.index >= count)
-                rune.index = rune.index - count;
-        }
-        else {
-            rune.index--;
-            if (rune.index < 0)
-                rune.index = rune.index + count;
         }
         hasDrawn++;
     });
@@ -180,14 +189,16 @@ function draw() {
         return;
     }
     // clear
-    ctx.fillStyle = 'rgba(255, 255, 255, 1)';
-    ctx.fillRect(0, 0, width, height);
+    ctx.clearRect(0, 0, width, height);
 
-    drawItems(runes25, spritesImage25, rLarge, pos25, 128, drawSize25, 25, 25, true, true);
     ctx.globalAlpha = 1;
-    drawItems(runes22, spritesImage22, rSmall, pos22, 256, drawSize22, 22, 12, false, false);
+    drawItems(runes25, spritesImage25, rLarge, pos25, 128, drawSize25, 25, 25, false);
+    moveItems(runes25, "index", true);
+    ctx.globalAlpha = 1;
+    drawItems(runes22, spritesImage22, rSmall, pos22, 256, drawSize22, 22, 22, false);
+    moveItems(runes22, "index", false);
 
-    // reset alpha
+    // reset alpha  rSmall
     //ctx.globalAlpha = 1;
     //runes25StartIndex++;
     //if (runes25StartIndex > 24)
