@@ -13,6 +13,7 @@ builder.Services.AddSession( options => {
   options.Cookie.IsEssential = true;
   options.Cookie.SameSite = SameSiteMode.None;
 } );
+builder.Services.AddApplicationInsightsTelemetry( builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"] );
 
 var app = builder.Build();
 

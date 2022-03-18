@@ -5,7 +5,13 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>RuneBox</RootNamespace>
-    <Platforms>AnyCPU;x86</Platforms>
+    <Platforms>AnyCPU;x86;ARM32;x64</Platforms>
+    <UserSecretsId>83f88094-3fbf-4694-8be5-5c2c7bc02553</UserSecretsId>
+    <ApplicationInsightsResourceId>/subscriptions/fd2efb47-7462-4268-9198-ffedaf7606dc/resourceGroups/group-runebox/providers/microsoft.insights/components/runebox-web</ApplicationInsightsResourceId>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.15.0" />
+  </ItemGroup>
 
 </Project>
