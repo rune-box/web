@@ -16,5 +16,10 @@ namespace RuneBox.Controllers {
       return View();
     }
 
+    [Route( "meme/triangle-text" )]
+    public ActionResult TriangleText() {
+      return View();
+    }
+
   }
 }

@@ -3,7 +3,7 @@
 *@
 @{
     Layout = "_DesktopLayout";
-    ViewData["Title"] = "Lines Text";
+    ViewData["Title"] = "Triangles Text";
 }
 <style>
     body {
@@ -35,7 +35,7 @@
             </button>
         </div>
         <div class="cell-6">
-            <a class="command-button secondary outline" href="https://threejs.org/examples/webgl_custom_attributes_lines.html">
+            <a class="command-button secondary outline" href="https://threejs.org/examples/webgl_modifier_tessellation">
                 <span class="mif-github icon"></span>
                 <span class="caption">three.js example</span>
             </a>
@@ -46,30 +46,38 @@
 
 @section Scripts{
     <script type="x-shader/x-vertex" id="vertexshader">
-			uniform float amplitude;
+		uniform float amplitude;
 
-			attribute vec3 displacement;
-			attribute vec3 customColor;
+		attribute vec3 customColor;
+		attribute vec3 displacement;
 
-			varying vec3 vColor;
+		varying vec3 vNormal;
+		varying vec3 vColor;
 
-			void main() {
-				vec3 newPosition = position + amplitude * displacement;
-				vColor = customColor;
-				gl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition, 1.0 );
-			}
-		</script>
+		void main() {
+			vNormal = normal;
+			vColor = customColor;
 
-		<script type="x-shader/x-fragment" id="fragmentshader">
-			uniform vec3 color;
-			uniform float opacity;
+			vec3 newPosition = position + normal * amplitude * displacement;
+			gl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition, 1.0 );
+		}
+	</script>
 
-			varying vec3 vColor;
+	<script type="x-shader/x-fragment" id="fragmentshader">
+		varying vec3 vNormal;
+		varying vec3 vColor;
 
-			void main() {
-				gl_FragColor = vec4( vColor * color, opacity );
-			}
-		</script>
+		void main() {
+			const float ambient = 0.4;
+
+			vec3 light = vec3( 1.0 );
+			light = normalize( light );
+
+			float directional = max( dot( vNormal, light ), 0.0 );
+
+			gl_FragColor = vec4( ( directional + ambient ) * vColor, 1.0 );
+		}
+	</script>
 
     <script async src="https://unpkg.com/es-module-shims@1.3.6/dist/es-module-shims.js"></script>
 	<script type="importmap">
@@ -79,6 +87,5 @@
 			}
 		}
 	</script>
-    @*<script type="text/javascript" src="~/Scripts/stats.min.js"></script>*@
-    <script type="module" src="~/js/meme/line-text.js" asp-append-version="true"></script>
+    <script type="module" src="~/js/meme/triangle-text.js" asp-append-version="true"></script>
 }
