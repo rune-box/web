@@ -1,0 +1,29 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="language" content="en" />
+    <title>@ViewData["Title"] - RuneBox</title>
+    <link rel="stylesheet" href="~/lib/metro/css/metro-all.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+    @*<link rel="stylesheet" href="~/Content/spectrum/css/spectrum.min.css" />*@
+    <link rel="stylesheet" href="~/css/desktop.css?v=20201010" />
+</head>
+
+<body>
+    <div id="body" class="desktop">
+        @RenderBody()
+    </div>
+
+    <script type="text/javascript" src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="~/lib/metro/js/metro.min.js"></script>
+    <script type="text/javascript" src="~/lib/3rd/CCapture.all.min.js"></script>
+    <script type="text/javascript" src="~/js/utils/full-screen.js"></script>
+    <script type="text/javascript" src="~/js/utils/common.js"></script>
+    <script type="text/javascript" src="~/js/utils/desktop.js?v=202203241320"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

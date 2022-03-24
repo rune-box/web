@@ -1,0 +1,85 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "_DesktopLayout";
+    ViewData["Title"] = "Lines Text";
+}
+<style>
+    body {
+        color: #ffffff;
+        font-family: Monospace;
+        font-size: 13px;
+        text-align: center;
+        font-weight: bold;
+        background-color: #000000;
+        margin: 0px;
+        overflow: hidden;
+    }
+</style>
+
+<div id="container" class="h-100">
+</div>
+
+<div id="panelCharm" class="bg-light p-5" data-role="charms" data-position="bottom" style="height: 300px;">
+    <div class="row">
+        <div class="cell-6 d-flex flex-justify-start">
+            <button class="action-button second" onclick="startRecord();">
+                <span class="icon"><span class="mif-play"></span></span>
+            </button>
+            <button class="action-button second ml-2" onclick="stopRecord();">
+                <span class="icon"><span class="mif-stop"></span></span>
+            </button>
+            <button class="action-button second ml-2" onclick="downloadRecord();">
+                <span class="icon"><span class="mif-file-download"></span></span>
+            </button>
+        </div>
+        <div class="cell-6">
+            <a class="command-button secondary outline" href="https://threejs.org/examples/webgl_custom_attributes_lines.html">
+                <span class="mif-github icon"></span>
+                <span class="caption">three.js example</span>
+            </a>
+        </div>
+    </div>
+    @await Html.PartialAsync( "_NavRow_WebEffects" )
+</div>
+
+@section Scripts{
+    <script type="text/javascript" src="~/lib/3d/three.min.js"></script>
+    <script type="x-shader/x-vertex" id="vertexshader">
+			uniform float amplitude;
+
+			attribute vec3 displacement;
+			attribute vec3 customColor;
+
+			varying vec3 vColor;
+
+			void main() {
+				vec3 newPosition = position + amplitude * displacement;
+				vColor = customColor;
+				gl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition, 1.0 );
+			}
+		</script>
+
+		<script type="x-shader/x-fragment" id="fragmentshader">
+			uniform vec3 color;
+			uniform float opacity;
+
+			varying vec3 vColor;
+
+			void main() {
+				gl_FragColor = vec4( vColor * color, opacity );
+			}
+		</script>
+
+    <script async src="https://unpkg.com/es-module-shims@1.3.6/dist/es-module-shims.js"></script>
+	<script type="importmap">
+		{
+			"imports": {
+				"three": "../lib/3d/three.module.js"
+			}
+		}
+	</script>
+    @*<script type="text/javascript" src="~/Scripts/stats.min.js"></script>*@
+    <script type="module" src="~/js/meme/line-text.js" asp-append-version="true"></script>
+}
